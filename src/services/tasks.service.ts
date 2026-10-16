@@ -1,9 +1,9 @@
-import { type ITask, USERS } from '../types/task.ts';
+import { type ITask, TASKS, USERS } from '../types/task.ts';
 import { type IReturnType } from '../types/returntype.ts';
 
 class TasksService {
     async getAlluserTasks(userId: number): Promise<IReturnType<any>> {
-        const userExists = USERS.find(user => user.id === userId);
+        const userExists = TASKS.find(user => user.userId === userId);
         if (!userExists) {
             return { message: `User with ID: ${userId} not found`, status: 404 };
         }

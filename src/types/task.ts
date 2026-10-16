@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export type ITask = {
     userId: number;
     title: string;
@@ -7,6 +9,16 @@ export type ITask = {
     isCompleted: boolean;
     status: 'pending' | 'in-progress' | 'completed';
 }
+
+export const taskSchema = z.object({
+    userId: z.number().int().positive(),
+    title: z.string().min(1, { message: 'Title is required' }),
+    description: z.string().min(1, { message: 'Description is required' }),
+    startDate: z.string().refine(date => !isNaN(Date.parse(date)), { message: 'Invalid start date' }),
+    endDate: z.string().refine(date => !isNaN(Date.parse(date)), { message: 'Invalid end date' }),
+    isCompleted: z.boolean(),
+    status: z.enum(['pending', 'in-progress', 'completed']),
+});
 
 export const TASKS: ITask[] = [
   { userId: 1, title: 'Plan weekly priorities', description: 'Review current commitments and set priorities for the week.', startDate: '2026-10-01', endDate: '2026-10-02', isCompleted: true, status: 'completed' },

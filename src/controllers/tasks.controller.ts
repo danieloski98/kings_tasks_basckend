@@ -1,5 +1,7 @@
 import { Router, type Request, type Response } from 'express'
 import TaskService from '../services/tasks.service.ts'
+import { taskSchema } from '../types/task.ts';
+import { validatePayload } from '../middlewares/validate-payload.ts';
 
 const router = Router();
 
@@ -11,7 +13,7 @@ router.get('/:userId', async (req: Request, res: Response) => {
     res.status(response.status).json(response);
 });
 
-router.post('/:userId', (req: Request, res: Response) => {
+router.post('/:userId', validatePayload(taskSchema), (req: Request, res: Response) => {
     const { userId } = req.params;
     const taskData = req.body;
     // Here you would typically save the taskData for the given userId to a database
