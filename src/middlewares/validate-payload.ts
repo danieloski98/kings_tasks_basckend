@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export const validatePayload = (schema: z.ZodSchema) => {
     return (req: any, res: any, next: any) => {
         const result = schema.safeParse(req.body);

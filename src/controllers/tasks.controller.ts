@@ -2,18 +2,24 @@ import { Router, type Request, type Response } from 'express'
 import TaskService from '../services/tasks.service.ts'
 import { taskSchema } from '../types/task.ts';
 import { validatePayload } from '../middlewares/validate-payload.ts';
+import {testM} from '../middlewares/test-middleware.ts';
 
 const router = Router();
-
-router.get('/:userId', async (req: Request, res: Response) => {
+router.get('/:userId', testM(), async (req: Request, res: Response) => {
     const { userId } = req.params;
     const response = await TaskService.getAlluserTasks(Number(userId));
     // Here you would typically fetch tasks for the given userId from a database
     // For demonstration purposes, we'll return a static response
     res.status(response.status).json(response);
+    
 });
 
-router.post('/:userId', validatePayload(taskSchema), (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
+    const response = await TaskService.getAll();
+    res.status(response.status).json(response);
+})
+ 
+router.post('/:userId', testM, validatePayload(taskSchema), (req: Request, res: Response) => {
     const { userId } = req.params;
     const taskData = req.body;
     // Here you would typically save the taskData for the given userId to a database

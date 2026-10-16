@@ -1,7 +1,15 @@
-import { type ITask, TASKS, USERS } from '../types/task.ts';
+import { type ITask, TASKS } from '../types/task.ts';
 import { type IReturnType } from '../types/returntype.ts';
 
 class TasksService {
+    async getAll(): Promise<IReturnType<ITask[]>> {
+        return {
+            message: 'Fetching all tasks',
+            data: TASKS,
+            status: 200
+        };
+    }
+
     async getAlluserTasks(userId: number): Promise<IReturnType<any>> {
         const userExists = TASKS.find(user => user.userId === userId);
         if (!userExists) {
