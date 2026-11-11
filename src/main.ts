@@ -1,9 +1,15 @@
 import 'dotenv/config';
-import { Server } from './server.ts';   
+import { Server } from './server.ts';  
+import UserAuthRouter from './controllers/userauth.controller.ts' 
 import TaskRouter from './controllers/tasks.controller.ts'
+import { connectDb} from './db/index.ts'
+
+// Connect to the database
+connectDb();
 
 // setting up routes
 Server.use('/api/tasks', TaskRouter);
+Server.use('/api/user-auth', UserAuthRouter);
 
 // handle not found routes
 Server.use((req, res, next) => {
