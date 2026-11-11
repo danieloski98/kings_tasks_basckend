@@ -2,11 +2,13 @@ import { Router, type Request, type Response } from 'express'
 import TaskService from '../services/tasks.service.ts'
 import { taskSchema } from '../types/task.ts';
 import { validatePayload } from '../middlewares/validate-payload.ts';
+import { authMiddleware } from '../middlewares/auth-middleware.ts';
 
 const router = Router();
 
-router.get('/:userId', async (req: Request, res: Response) => {
+router.get('/:userId', authMiddleware(), async (req: Request, res: Response) => {
     const { userId } = req.params;
+    console.log(`USER TOKEN: ${req['user']}`);
     const response = await TaskService.getAlluserTasks(Number(userId));
     // Here you would typically fetch tasks for the given userId from a database
     // For demonstration purposes, we'll return a static response
@@ -38,3 +40,4 @@ router.delete('/:userId/:taskId', (req: Request, res: Response) => {
 
 
 export default router;
+
